@@ -23,7 +23,7 @@ const ImageTransfer = () => {
         // POSTリクエストを送信する処理を実装する
         // ここで`image`の値を使用してBase64形式の画像データを送信する
         console.log(image);
-        axios.post('http://localhost:5000/analyze_img', {
+        axios.post('${process.env.REACT_APP_URL}/analize_image', {
             content: image
         }).then((response) => {
             console.log(response.data);
