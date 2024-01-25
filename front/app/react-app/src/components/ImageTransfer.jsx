@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import axios  from 'axios';
+import axios from 'axios';
+import ShowMessage from './ShowMessage';
 
 const ImageTransfer = () => {
     const [image, setImage] = useState(null);
+    const [message, setMessage] = useState('');
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -24,21 +26,27 @@ const ImageTransfer = () => {
         // ここで`image`の値を使用してBase64形式の画像データを送信する
         console.log(image);
         // TODO: dotenvを使ってURLを環境変数から取得する
-        axios.post(`${process.env.REACT_APP_URL}/analyze_image`, {
-            content: image
-        }).then((response) => {
-            console.log(response.data);
-        }).catch((error) => {
-            console.log(error);
-        });
-
+        axios
+            .post(`${process.env.REACT_APP_URL}/analyze_image`, {
+                content: image,
+            })
+            .then((response) => {
+                console.log(response.data);
+                setMessage(response.data.content); // Set the response data's content as the message
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
-        <div>
-            <input type="file" onChange={handleImageChange} />
-            <button onClick={handleImageUpload}>Upload</button>
-        </div>
+        <>
+            <div>
+                <input type="file" onChange={handleImageChange} />
+                <button onClick={handleImageUpload}>Upload</button>
+            </div>
+            <ShowMessage message={message} />
+        </>
     );
 };
 
