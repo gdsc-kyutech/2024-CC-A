@@ -24,7 +24,7 @@ const ImageTransfer = () => {
         // ここで`image`の値を使用してBase64形式の画像データを送信する
         console.log(image);
         // TODO: dotenvを使ってURLを環境変数から取得する
-        axios.post('http://localhost:8080/analyze_image', {
+        axios.post(`${process.env.REACT_APP_URL}/analyze_image`, {
             content: image
         }).then((response) => {
             console.log(response.data);

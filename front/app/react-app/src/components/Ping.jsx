@@ -9,7 +9,7 @@ const Ping = () => {
         const checkConnection = async () => {
             try {
                 // TODO: dotenvを使ってURLを環境変数から取得する
-                const response = await axios.get('http://localhost:8080/ping');
+                const response = await axios.get(`${process.env.REACT_APP_URL}/ping`);
                 if (response.status === 200) {
                     setIsConnected(true);
                     setResponseData(response.data);
