@@ -23,7 +23,8 @@ const ImageTransfer = () => {
         // POSTリクエストを送信する処理を実装する
         // ここで`image`の値を使用してBase64形式の画像データを送信する
         console.log(image);
-        axios.post('http://localhost:8080/analize_image', {
+        // TODO: dotenvを使ってURLを環境変数から取得する
+        axios.post('http://localhost:8080/analyze_image', {
             content: image
         }).then((response) => {
             console.log(response.data);

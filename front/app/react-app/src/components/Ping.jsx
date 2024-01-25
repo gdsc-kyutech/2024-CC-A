@@ -8,7 +8,8 @@ const Ping = () => {
     useEffect(() => {
         const checkConnection = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/ping'); 
+                // TODO: dotenvを使ってURLを環境変数から取得する
+                const response = await axios.get('http://localhost:8080/ping');
                 if (response.status === 200) {
                     setIsConnected(true);
                     setResponseData(response.data);
