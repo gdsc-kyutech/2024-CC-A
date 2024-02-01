@@ -21,6 +21,7 @@ func (s *MyServer) PingGet(ctx context.Context) (*api.PingGetOK, error) {
 
 func (s *MyServer) AnalyzeImagePost(ctx context.Context, req api.OptAnalyzeImagePostReq) (*api.AnalyzeImagePostOK, error) {
 	log.Print("/analyze_image")
+	log.Print(req)
 	res := api.AnalyzeImagePostOK{}
 	str := api.NewOptString("pong")
 	res.SetContent(str)
