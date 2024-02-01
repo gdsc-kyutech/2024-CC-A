@@ -1,44 +1,38 @@
-package main
+package gcloud
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"os"
 
 	vision "cloud.google.com/go/vision/apiv1"
+	"github.com/taxio/errors"
 )
 
-func main() {
-	ctx := context.Background()
-
-	// Creates a client.
+func ask_vision(ctx context.Context, filename string) (string, error) {
 	client, err := vision.NewImageAnnotatorClient(ctx)
 	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
+		return "", errors.Wrap(err)
 	}
 	defer client.Close()
 
-	// Sets the name of the image file to annotate.
-	filename := os.Args[1]
-
 	file, err := os.Open(filename)
 	if err != nil {
-		log.Fatalf("Failed to read file: %v", err)
+		return "", errors.Wrap(err)
 	}
 	defer file.Close()
 	image, err := vision.NewImageFromReader(file)
 	if err != nil {
-		log.Fatalf("Failed to create image: %v", err)
+		return "", errors.Wrap(err)
 	}
 
 	labels, err := client.DetectLabels(ctx, image, nil, 10)
 	if err != nil {
-		log.Fatalf("Failed to detect labels: %v", err)
+		return "", errors.Wrap(err)
 	}
 
-	fmt.Println("Labels:")
+	s := ""
 	for _, label := range labels {
-		fmt.Println(label.Description)
+		s += label.Description + "\n"
 	}
+	return s, nil
 }
