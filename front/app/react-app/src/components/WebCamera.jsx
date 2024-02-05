@@ -5,26 +5,23 @@ import Chat from './Chat';
 
 const WebCamera = () => {
     const webcamRef = React.useRef(null);
-    const [isCameraRunning, setIsCameraRunning] = React.useState(false); // カメラの実行状態をfalseに設定
-    const [response, setResponse] = React.useState(null); // レスポンスデータの状態を管理
+    const [isCameraRunning, setIsCameraRunning] = React.useState(false);
+    const [response, setResponse] = React.useState(null);
 
     const capture = React.useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
-        const base64Image = imageSrc.split(',')[1]; // データURLからベース64画像データを抽出
+        const base64Image = imageSrc;
 
-        // axiosを使用してベース64画像データを含むPOSTリクエストを実行
         axios.post(`${process.env.REACT_APP_URL}/analyze_image`, { image: base64Image }, {
             headers: {
                 'Content-Type': 'application/json',
             },
         })
             .then(response => {
-                // レスポンスデータの処理
                 console.log(response.data);
-                setResponse(response.data); // レスポンスデータを状態に設定
+                setResponse(response.data.content);
             })
             .catch(error => {
-                // エラーの処理
                 console.error(error);
             });
     }, [webcamRef]);
