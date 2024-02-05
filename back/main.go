@@ -28,9 +28,7 @@ func (s *MyServer) AnalyzeImagePost(ctx context.Context, req api.OptAnalyzeImage
 	if err != nil {
 		return nil, err
 	}
-	// TODO: promptをつくる
 	prompt := "あなたは環境対策の専門家です。あなたは写真に写っているものに関して環境保護に役立つ使用法、アイデアなどを提示しなければなりません。写真に写っているものは以下に提示します。"
-	// TODO: Gemini に prompt + visionsRes を渡して結果を受け取る
 	geminiRes, err := gcloud.AskGemini(ctx, prompt+visionRes)
 	if err != nil {
 		return nil, err

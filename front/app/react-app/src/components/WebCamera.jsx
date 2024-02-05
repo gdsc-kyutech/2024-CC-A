@@ -10,7 +10,7 @@ const WebCamera = () => {
 
     const capture = React.useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
-        const base64Image = imageSrc;
+        const base64Image = imageSrc.split(',')[1];
 
         axios.post(`${process.env.REACT_APP_URL}/analyze_image`, { image: base64Image }, {
             headers: {
