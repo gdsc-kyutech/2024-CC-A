@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gdsc-kyutech/2024-CC-A/back/api"
+	"github.com/gdsc-kyutech/2024-CC-A/back/gcloud"
 )
 
 type MyServer struct{}
@@ -21,10 +22,21 @@ func (s *MyServer) PingGet(ctx context.Context) (*api.PingGetOK, error) {
 
 func (s *MyServer) AnalyzeImagePost(ctx context.Context, req api.OptAnalyzeImagePostReq) (*api.AnalyzeImagePostOK, error) {
 	log.Print("/analyze_image")
-	log.Print(req)
 	res := api.AnalyzeImagePostOK{}
 	str := api.NewOptString("pong")
-	res.SetContent(str)
+	visionRes, err := gcloud.AskVision(ctx, req.Value.Image.Value)
+	if err != nil {
+		return nil, err
+	}
+	// TODO: promptをつくる
+	prompt := "あなたは環境対策の専門家です。あなたは写真に写っているものに関して環境保護に役立つ使用法、アイデアなどを提示しなければなりません。写真に写っているものは以下に提示します。"
+	// TODO: Gemini に prompt + visionsRes を渡して結果を受け取る
+	geminiRes, err := gcloud.AskGemini(ctx, prompt+visionRes)
+	if err != nil {
+		return nil, err
+	}
+	optStr := api.NewOptString(geminiRes)
+	res.SetContent(optStr)
 	log.Print(str)
 	return &res, nil
 }
