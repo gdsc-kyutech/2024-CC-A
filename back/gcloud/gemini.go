@@ -49,7 +49,7 @@ type Response struct {
 	} `json:"candidates"`
 }
 
-func ask_gemini(ctx context.Context, question string) (string, error) {
+func AskGemini(ctx context.Context, question string) (string, error) {
 	client, err := google.DefaultClient(ctx, "https://www.googleapis.com/auth/cloud-platform")
 	if err != nil {
 		return "", errors.Wrap(err)
@@ -59,7 +59,7 @@ func ask_gemini(ctx context.Context, question string) (string, error) {
 		Contents: Contents{
 			Role: "user",
 			Parts: Parts{
-				Text: "エアコンをエコに使う方法を教えてください",
+				Text: question,
 			},
 		},
 		SafetySettings: SafetySettings{
