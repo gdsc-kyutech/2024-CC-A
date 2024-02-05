@@ -11,7 +11,7 @@ const ImageTransfer = () => {
         const reader = new FileReader();
 
         reader.onloadend = () => {
-            const base64String = reader.result;
+            const base64String = reader.result.split(',')[1];
             console.log(base64String); // Add this line to log the base64 string
             setImage(base64String);
         };
@@ -28,7 +28,7 @@ const ImageTransfer = () => {
         // TODO: dotenvを使ってURLを環境変数から取得する
         axios
             .post(`${process.env.REACT_APP_URL}/analyze_image`, {
-                content: image,
+                image: image,
             })
             .then((response) => {
                 console.log(response.data);
