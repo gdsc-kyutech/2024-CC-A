@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import ShowMessage from './ShowMessage';
+import Chat from './Chat';
 
 const ImageTransfer = () => {
     const [image, setImage] = useState(null);
-    const [message, setMessage] = useState('');
+    const [response, setResponse] = useState('');
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -32,7 +32,7 @@ const ImageTransfer = () => {
             })
             .then((response) => {
                 console.log(response.data);
-                setMessage(response.data.content); // Set the response data's content as the message
+                setResponse(response.data.content); // Set the response data's content as the message
             })
             .catch((error) => {
                 console.log(error);
@@ -45,7 +45,7 @@ const ImageTransfer = () => {
                 <input type="file" onChange={handleImageChange} />
                 <button onClick={handleImageUpload}>Upload</button>
             </div>
-            <ShowMessage message={message} />
+            <Chat response={response} />
         </>
     );
 };

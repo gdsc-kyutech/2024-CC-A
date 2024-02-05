@@ -1,10 +1,12 @@
 import React from 'react';
 import Webcam from 'react-webcam';
 import axios from 'axios';
+import Chat from './Chat';
 
 const WebCamera = () => {
     const webcamRef = React.useRef(null);
     const [isCameraRunning, setIsCameraRunning] = React.useState(false); // カメラの実行状態をfalseに設定
+    const [response, setResponse] = React.useState(null); // レスポンスデータの状態を管理
 
     const capture = React.useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
@@ -19,6 +21,7 @@ const WebCamera = () => {
             .then(response => {
                 // レスポンスデータの処理
                 console.log(response.data);
+                setResponse(response.data); // レスポンスデータを状態に設定
             })
             .catch(error => {
                 // エラーの処理
@@ -47,6 +50,7 @@ const WebCamera = () => {
                         <div className='my-10'>
                             <button onClick={capture}>キャプチャ</button>
                         </div>
+                        <Chat response={response} />
                     </>
                 )}
             </div>
