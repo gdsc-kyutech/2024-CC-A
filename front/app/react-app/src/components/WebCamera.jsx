@@ -2,6 +2,8 @@ import React from 'react';
 import Webcam from 'react-webcam';
 import axios from 'axios';
 import Chat from './Chat';
+import Loading from './Loading';
+
 
 const WebCamera = () => {
     const webcamRef = React.useRef(null);
