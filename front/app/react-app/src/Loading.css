@@ -11,8 +11,8 @@
 .loader007:before,
 .loader007:after {
   border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
   -webkit-animation: load7 1.8s infinite ease-in-out;
@@ -37,12 +37,12 @@
   top: 0;
 }
 .loader007:before {
-  left: -3.5em;
+  left: -25px;
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
 .loader007:after {
-  left: 3.5em;
+  left: 25px;
 }
 @-webkit-keyframes load7 {
   0%,
