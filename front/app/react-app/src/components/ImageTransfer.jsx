@@ -23,18 +23,12 @@ const ImageTransfer = () => {
         }
     };
 
-    const handleClick = () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 3000);
-    }
-
     const handleImageUpload = () => {
         // POSTリクエストを送信する処理を実装する
         // ここで`image`の値を使用してBase64形式の画像データを送信する
         console.log(image);
         // TODO: dotenvを使ってURLを環境変数から取得する
+        setLoading(true);
         axios
             .post(`${process.env.REACT_APP_URL}/analyze_image`, {
                 image: image,
@@ -42,6 +36,7 @@ const ImageTransfer = () => {
             .then((response) => {
                 console.log(response.data);
                 setResponse(response.data.content); // Set the response data's content as the message
+                setLoading(false);
             })
             .catch((error) => {
                 console.log(error);
@@ -53,7 +48,7 @@ const ImageTransfer = () => {
             <div>
                 <input type="file" onChange={handleImageChange} />
                 <button onClick={handleImageUpload}>Upload</button>
-                <button onClick={handleClick}>テスト用ボタン</button>
+                {/* <button onClick={handleClick}>テスト用ボタン</button> */}
                 <Loading isLoading={loading} />
             </div>
             <Chat response={response} />

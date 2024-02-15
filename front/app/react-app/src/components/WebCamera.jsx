@@ -10,12 +10,14 @@ const WebCamera = () => {
     const [isCameraRunning, setIsCameraRunning] = React.useState(false);
     const [capturedImage, setCapturedImage] = React.useState(null);
     const [response, setResponse] = React.useState(null);
+    const [loading ,setLoading] = React.useState(false);
     
     const capture = React.useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
         const base64Image = imageSrc.split(',')[1];
 
         setCapturedImage(imageSrc);
+        setLoading(true);
         
         axios.post(`${process.env.REACT_APP_URL}/analyze_image`, { image: base64Image }, {
             headers: {
@@ -25,6 +27,7 @@ const WebCamera = () => {
             .then(response => {
                 console.log(response.data);
                 setResponse(response.data.content);
+                setLoading(false);
             })
             .catch(error => {
                 console.error(error);
@@ -61,6 +64,7 @@ const WebCamera = () => {
                 {capturedImage && ( 
                     <div>
                         <img src={capturedImage} alt="Captured" />
+                        <Loading isLoading={loading} />
                     </div>
                 )}
             </div>
