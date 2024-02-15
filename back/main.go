@@ -4,10 +4,16 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/gdsc-kyutech/2024-CC-A/back/api"
 	"github.com/gdsc-kyutech/2024-CC-A/back/gcloud"
 )
+
+const PROMPT = "./resource/prompt.md"
+
+var prompt string
 
 type MyServer struct{}
 
@@ -28,12 +34,11 @@ func (s *MyServer) AnalyzeImagePost(ctx context.Context, req api.OptAnalyzeImage
 	if err != nil {
 		return nil, err
 	}
-	prompt := "あなたは環境対策の専門家です。あなたは写真に写っているものに関して環境保護に役立つ使用法、アイデアなどを提示しなければなりません。写真に写っているものは以下に提示します。"
-	geminiRes, err := gcloud.AskGemini(ctx, prompt+visionRes)
+	geminiRes, err := gcloud.AskGemini(ctx, prompt+strings.Split(visionRes, "\n")[0])
 	if err != nil {
 		return nil, err
 	}
-	optStr := api.NewOptString(geminiRes)
+	optStr := api.NewOptString("これは「" + strings.Split(visionRes, "\n")[0] + "」ですね。\n \n " + geminiRes)
 	res.SetContent(optStr)
 	log.Print(str)
 	return &res, nil
@@ -50,7 +55,7 @@ func (s *MyServer) NewError(ctx context.Context, err error) *api.ErrRespStatusCo
 func enableCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Set CORS headers
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")            // Allow all origins, adjust as necessary
+		w.Header().Set("Access-Control-Allow-Origin", "*")                                // Allow all origins, adjust as necessary
 		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE") // Allowed methods
 		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 
@@ -76,7 +81,14 @@ func main() {
 	// Wrap the server with the CORS middleware
 	corsHandler := enableCORS(srv)
 
-	if err := http.ListenAndServe(":8080", corsHandler); err != nil {
+	// ファイルを読み込む
+	bytes, err := os.ReadFile(PROMPT)
+	if err != nil {
+		log.Fatal(err)
+	}
+	prompt = string(bytes)
+
+	if err := http.ListenAndServe("172.20.10.2:8080", corsHandler); err != nil {
 		log.Fatal(err)
 	}
 }
