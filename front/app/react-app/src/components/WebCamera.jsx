@@ -3,7 +3,8 @@ import Webcam from 'react-webcam';
 import axios from 'axios';
 import Chat from './Chat';
 import Loading from './Loading';
-
+import cameraIcon from '../camera-icon.png'
+import shutterIcon from '../shutter-icon.png'
 
 const WebCamera = () => {
     const webcamRef = React.useRef(null);
@@ -41,7 +42,11 @@ const WebCamera = () => {
 
     return (
         <>
-            <button onClick={toggleCamera}>カメラの切り替え</button>
+        <div className='bg-[#D39200] mt-20 mx-6 rounded-[7.5px] '>
+            <button onClick={toggleCamera} className='text-white  p-3 w-40 rounded-lg font-semibold tracking-widest relative'>
+                <div>Camera</div>
+                <img src={cameraIcon} alt="" className='w-4 absolute left-[15px] top-[15px]'/>
+            </button>
             <div className='w-[80%] mx-auto my-20'>
                 {isCameraRunning && (
                     <>
@@ -52,9 +57,10 @@ const WebCamera = () => {
                             videoConstraints={{
                                 facingMode: "environment"
                             }}
+                            className='w-full rounded-[5px] '
                         />
-                        <div className='my-10 hover:bg-[#D39200]'>
-                            <button onClick={capture}>キャプチャ</button>
+                        <div className='my-5 pb-5'>
+                            <button onClick={capture}><img src={shutterIcon} alt="" className='w-10'/></button>
                         </div>
                         
                     </>
@@ -68,7 +74,8 @@ const WebCamera = () => {
                     </div>
                 )}
             </div>
-            <Chat response={response} />
+        </div>
+        <Chat response={response} />
         </>
     );
 };

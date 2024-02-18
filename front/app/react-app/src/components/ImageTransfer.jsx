@@ -45,13 +45,20 @@ const ImageTransfer = () => {
 
     return (
         <>
-            <div>
-                <input type="file" onChange={handleImageChange} />
-                <button onClick={handleImageUpload}>Upload</button>
-                {/* <button onClick={handleClick}>テスト用ボタン</button> */}
-                <Loading isLoading={loading} />
+            <div className='mx-6 mt-20'>
+                <div className='flex justify-between '>
+                    <input type="file" onChange={handleImageChange} 
+                        className='bg-[#D39200] text-white text-[10px] rounded-lg shadow-md block w-[245px]
+                        file:bg-[#D39200] file:text-white file:py-2 file:px-4 file:rounded-lg
+                        file:border-0 file:text-[12px]'
+                    />
+                    <button onClick={handleImageUpload} className="bg-[#D39200] text-white p-[3px] px-[6px] rounded-lg ml-2 shadow-md p-[5px] block text-[12.5px] font-semibold
+                    ">Upload</button>
+                    {/* <button onClick={handleClick}>テスト用ボタン</button> */} 
+                </div>
+                <Loading isLoading={loading}/>
             </div>
-            <Chat response={response} />
+            <Chat response={response} className="mb-20" />
         </>
     );
 };
