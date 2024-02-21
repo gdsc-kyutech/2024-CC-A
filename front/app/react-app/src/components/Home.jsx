@@ -14,7 +14,7 @@ export default function Home() {
             <ImageTransfer />
             <WebCamera />
         </div>
-        <Ping />
+        {/* <Ping /> */}
       </div>
     );
 }

@@ -68,13 +68,15 @@ const WebCamera = () => {
                 
                 }
                 {capturedImage && ( 
-                    <div>
-                        <img src={capturedImage} alt="Captured" />
-                        <Loading isLoading={loading} />
+                    <>
+                    <div className='pb-5'> 
+                        <img src={capturedImage} alt="Captured"/>
                     </div>
+                    </>
                 )}
             </div>
         </div>
+        <Loading isLoading={loading} />
         <Chat response={response} />
         </>
     );
